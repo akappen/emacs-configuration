@@ -57,6 +57,12 @@
 (require 'rinari)
 (global-rinari-mode)
 
+;; markdown-mode
+(autoload 'markdown-mode "markdown-mode"
+  "Major mode for editing Markdown files" t)
+(setq auto-mode-alist
+      (cons '("\\.md" . markdown-mode) auto-mode-alist))
+
 ;; ido
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
