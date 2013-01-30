@@ -8,6 +8,6 @@ Emacs 24 Configuration
     `ln -s emacs-configuration ~/.emacs.d`
 
 3.  Install the packages
-    `emacs --batch --load .emacs.d/install-packages.el`
+    `emacs --batch --load ~/.emacs.d/install-packages.el`
 
 4.  Use it
