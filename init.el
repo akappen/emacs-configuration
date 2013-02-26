@@ -33,6 +33,10 @@
 (add-to-list 'grep-find-ignored-directories "log")
 (add-to-list 'grep-find-ignored-directories "tmp")
 
+;; show path hints for buffers with the same name
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+
 ;;; package specific configuration
 
 ;; magit
