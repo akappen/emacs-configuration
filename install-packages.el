@@ -10,7 +10,9 @@
 (defvar my-packages
   (list 'magit
 	'browse-kill-ring
+	'multiple-cursors
 	'linum-off
+	'auto-complete
 	'coffee-mode
 	'haml-mode
 	'rspec-mode

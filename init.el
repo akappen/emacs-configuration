@@ -46,6 +46,17 @@
 ;; browse-kill-ring
 (browse-kill-ring-default-keybindings) ; M-y opens browser
 
+;; multiple-cursors
+(require 'multiple-cursors)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+;; auto-complete
+(require 'auto-complete-config)
+(add-to-list 'ac-modes 'haml-mode)
+(ac-config-default)
+
 ;; coffee-mode
 (require 'coffee-mode)
 (setq coffee-tab-width 2)
