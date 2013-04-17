@@ -19,7 +19,19 @@
 (load-theme 'twilight t)          ; tango-dark is nice too
 (add-hook 'before-save-hook       ; clean whitespace on save
 	  'delete-trailing-whitespace)
+(show-paren-mode t)               ; highlight matching braces
 (electric-pair-mode t)            ; pair quotes and braces
+(electric-indent-mode t)          ; auto indent where appropriate
+(delete-selection-mode t)         ; input replaces selected region
+
+;; put buffer name or file path in frame title
+(setq frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
+
+;; allow scroll-down/up-command to move point to buffer end/beginning
+(setq scroll-error-top-bottom 'true)
 
 ;; remap other-window to M-o
 (global-set-key (kbd "M-o") 'other-window)
