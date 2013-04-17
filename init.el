@@ -49,6 +49,28 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
+;; open and indent new line
+(defun smart-open-line ()
+  "Insert an empty line after the current line.
+Position the cursor at its beginning, according to the current mode."
+  (interactive)
+  (move-end-of-line nil)
+  (newline-and-indent))
+(global-set-key [(shift return)] 'smart-open-line)
+
+;; find recent files
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(defun recentf-ido-find-file ()
+  "Find a recent file using ido."
+  (interactive)
+  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))
+(global-set-key (kbd "C-x f") 'recentf-ido-find-file)
+
+
 ;;; package specific configuration
 
 ;; magit
