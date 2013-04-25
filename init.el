@@ -30,6 +30,9 @@
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))))
 
+;; camelcase editing in programming modes
+(add-hook 'prog-mode-hook 'subword-mode)
+
 ;; allow scroll-down/up-command to move point to buffer end/beginning
 (setq scroll-error-top-bottom 'true)
 
@@ -93,7 +96,7 @@ Position the cursor at its beginning, according to the current mode."
 
 ;; coffee-mode
 (require 'coffee-mode)
-(setq coffee-tab-width 2)
+(custom-set-variables '(coffee-tab-width 2))
 
 ;; ruby-tools
 (require 'ruby-tools) ; needed to hook ruby-mode
