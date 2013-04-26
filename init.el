@@ -43,6 +43,9 @@
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 
+;; spell check comments in programming modes
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
 ;; grep-find ignores
 (grep-compute-defaults)
 (add-to-list 'grep-find-ignored-directories "log")
@@ -91,8 +94,10 @@ Position the cursor at its beginning, according to the current mode."
 
 ;; auto-complete
 (require 'auto-complete-config)
-(add-to-list 'ac-modes 'haml-mode)
 (ac-config-default)
+(ac-flyspell-workaround)
+(add-to-list 'ac-modes 'haml-mode)
+(add-to-list 'ac-modes 'coffee-mode)
 
 ;; coffee-mode
 (require 'coffee-mode)
