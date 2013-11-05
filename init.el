@@ -16,13 +16,13 @@
 (winner-mode t)                   ; window layout history
 (defalias 'yes-or-no-p 'y-or-n-p) ; short prompts
 (setq make-backup-files nil)      ; no ~ backup files
+(set-default-font "SourceCodePro-11")
 (load-theme 'twilight t)          ; tango-dark is nice too
 (add-hook 'before-save-hook       ; clean whitespace on save
 	  'delete-trailing-whitespace)
 (show-paren-mode t)               ; highlight matching braces
 (electric-pair-mode t)            ; pair quotes and braces
 (electric-indent-mode t)          ; auto indent where appropriate
-(delete-selection-mode t)         ; input replaces selected region
 
 ;; put buffer name or file path in frame title
 (setq frame-title-format
@@ -34,14 +34,18 @@
 (add-hook 'prog-mode-hook 'subword-mode)
 
 ;; allow scroll-down/up-command to move point to buffer end/beginning
-(setq scroll-error-top-bottom 'true)
+(setq scroll-error-top-bottom t)
 
-;; remap other-window to M-o
-(global-set-key (kbd "M-o") 'other-window)
+;; scroll-down/up-command returns to starting row and column
+(setq scroll-preserve-screen-position t)
 
-;; C-h and C-M-h as delete and delete word
+;; window navigation
+(global-set-key (kbd "M-o") 'next-multiframe-window)
+(global-set-key (kbd "M-O") 'previous-multiframe-window)
+
+;; C-h and M-h as delete and delete word
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
-(global-set-key (kbd "C-M-h") 'backward-kill-word)
+(global-set-key (kbd "M-h") 'backward-kill-word)
 
 ;; spell check comments in programming modes
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
@@ -55,7 +59,7 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
-;; open and indent new line
+;; open and indent new line from anywhere
 (defun smart-open-line ()
   "Insert an empty line after the current line.
 Position the cursor at its beginning, according to the current mode."
@@ -63,6 +67,7 @@ Position the cursor at its beginning, according to the current mode."
   (move-end-of-line nil)
   (newline-and-indent))
 (global-set-key [(shift return)] 'smart-open-line)
+(global-set-key (kbd "C-M-j") 'smart-open-line)
 
 ;; find recent files
 (require 'recentf)
@@ -101,7 +106,10 @@ Position the cursor at its beginning, according to the current mode."
 
 ;; coffee-mode
 (require 'coffee-mode)
-(custom-set-variables '(coffee-tab-width 2))
+(setq coffee-tab-width 2)
+
+;; ruby-mode
+(setq ruby-deep-indent-paren nil) ; force 2 space indent of multi-line hash literals
 
 ;; ruby-tools
 (require 'ruby-tools) ; needed to hook ruby-mode
@@ -129,4 +137,6 @@ Position the cursor at its beginning, according to the current mode."
 (setq org-directory "~/org")
 (setq org-agenda-files (directory-files org-directory 1 "\.org$"))
 (setq org-agenda-clockreport-parameter-plist (quote (:fileskip0 t)))
+(setq org-agenda-start-with-clockreport-mode t)
+(setq org-agenda-start-with-log-mode t)
 (global-set-key "\C-ca" 'org-agenda)

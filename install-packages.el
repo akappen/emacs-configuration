@@ -17,6 +17,7 @@
 	'haml-mode
 	'rspec-mode
 	'ruby-tools
+	'ruby-end
 	'flymake-ruby
 	'rinari
 	'markdown-mode
