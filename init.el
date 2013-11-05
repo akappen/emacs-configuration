@@ -133,6 +133,15 @@ Position the cursor at its beginning, according to the current mode."
 (setq ido-everywhere t)
 (ido-mode 1)
 
+;; flx-ido
+(require 'flx-ido)
+(flx-ido-mode 1)
+(setq ido-use-faces nil)
+
+;; ido-vertical-mode
+(require 'ido-vertical-mode)
+(ido-vertical-mode)
+
 ;; org-mode
 (setq org-directory "~/org")
 (setq org-agenda-files (directory-files org-directory 1 "\.org$"))

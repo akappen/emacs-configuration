@@ -8,7 +8,9 @@
 
 ;; install or update packages
 (defvar my-packages
-  (list 'magit
+  (list 'flx-ido
+	'ido-vertical-mode
+	'magit
 	'browse-kill-ring
 	'multiple-cursors
 	'linum-off
