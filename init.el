@@ -8,18 +8,23 @@
 
 ;; interface tweaks
 (setq inhibit-splash-screen t)    ; no welcome screen
+(defalias 'yes-or-no-p 'y-or-n-p) ; short prompts
 (menu-bar-mode t)                 ; enable menus
 (global-linum-mode t)             ; line numbers
 (require 'linum-off)              ;   where appropriate
 (column-number-mode t)            ; modeline column numbers
 (winner-mode t)                   ; window layout history
-(defalias 'yes-or-no-p 'y-or-n-p) ; short prompts
-(set-default-font "SourceCodePro-11")
-(load-theme 'twilight t)          ; tango-dark is nice too
 (add-hook 'before-save-hook       ; clean whitespace on save
 	  'delete-trailing-whitespace)
 (electric-pair-mode t)            ; pair quotes and braces
 (electric-indent-mode t)          ; auto indent where appropriate
+(load-theme 'twilight t)          ; tango-dark is nice too
+
+;; set font to Source Code Pro if available
+;; https://github.com/adobe/source-code-pro
+(if (x-list-fonts "SourceCodePro")
+    (set-frame-font "SourceCodePro-11" t t))
+
 
 ;; put buffer name or file path in frame title (why is this not a package called buffer-name-in-title?)
 (setq frame-title-format
