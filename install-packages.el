@@ -8,7 +8,8 @@
 
 ;; install or update packages
 (defvar my-packages
-  (list 'flx-ido
+  (list 'better-defaults
+	'flx-ido
 	'ido-vertical-mode
 	'magit
 	'browse-kill-ring

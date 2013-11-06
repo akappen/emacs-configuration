@@ -8,23 +8,20 @@
 
 ;; interface tweaks
 (setq inhibit-splash-screen t)    ; no welcome screen
-(tool-bar-mode 0)                 ; no icon bar
-(scroll-bar-mode 0)               ; no scrollbar
+(menu-bar-mode t)                 ; enable menus
 (global-linum-mode t)             ; line numbers
 (require 'linum-off)              ;   where appropriate
 (column-number-mode t)            ; modeline column numbers
 (winner-mode t)                   ; window layout history
 (defalias 'yes-or-no-p 'y-or-n-p) ; short prompts
-(setq make-backup-files nil)      ; no ~ backup files
 (set-default-font "SourceCodePro-11")
 (load-theme 'twilight t)          ; tango-dark is nice too
 (add-hook 'before-save-hook       ; clean whitespace on save
 	  'delete-trailing-whitespace)
-(show-paren-mode t)               ; highlight matching braces
 (electric-pair-mode t)            ; pair quotes and braces
 (electric-indent-mode t)          ; auto indent where appropriate
 
-;; put buffer name or file path in frame title
+;; put buffer name or file path in frame title (why is this not a package called buffer-name-in-title?)
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
@@ -55,10 +52,6 @@
 (add-to-list 'grep-find-ignored-directories "log")
 (add-to-list 'grep-find-ignored-directories "tmp")
 
-;; show path hints for buffers with the same name
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
-
 ;; open and indent new line from anywhere
 (defun smart-open-line ()
   "Insert an empty line after the current line.
@@ -69,17 +62,17 @@ Position the cursor at its beginning, according to the current mode."
 (global-set-key [(shift return)] 'smart-open-line)
 (global-set-key (kbd "C-M-j") 'smart-open-line)
 
-;; find recent files
+;; find recent files (why is this not a package called ido-recentf?)
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
-(defun recentf-ido-find-file ()
+(defun ido-recentf-find-file ()
   "Find a recent file using ido."
   (interactive)
   (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
     (when file
       (find-file file))))
-(global-set-key (kbd "C-x f") 'recentf-ido-find-file)
+(global-set-key (kbd "C-x f") 'ido-recentf-find-file)
 
 
 ;;; package specific configuration
@@ -127,11 +120,6 @@ Position the cursor at its beginning, according to the current mode."
   "Major mode for editing Markdown files" t)
 (setq auto-mode-alist
       (cons '("\\.md" . markdown-mode) auto-mode-alist))
-
-;; ido
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode 1)
 
 ;; flx-ido
 (require 'flx-ido)
