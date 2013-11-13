@@ -20,8 +20,9 @@
 
 ;; set font to Source Code Pro if available
 ;; https://github.com/adobe/source-code-pro
-(if (x-list-fonts "SourceCodePro")
-    (set-frame-font "SourceCodePro-11" t t))
+(if (eq window-system 'x)
+    (if (x-list-fonts "SourceCodePro")
+        (set-frame-font "SourceCodePro-11" t t)))
 
 ;; put buffer name or file path in frame title (why is this not a package called buffer-name-in-title?)
 (setq frame-title-format
