@@ -11,12 +11,10 @@
 (defalias 'yes-or-no-p 'y-or-n-p) ; short prompts
 (menu-bar-mode t)                 ; enable menus
 (global-linum-mode t)             ; line numbers
-(require 'linum-off)              ;   where appropriate
 (column-number-mode t)            ; modeline column numbers
 (winner-mode t)                   ; window layout history
 (add-hook 'before-save-hook       ; clean whitespace on save
 	  'delete-trailing-whitespace)
-(electric-pair-mode t)            ; pair quotes and braces
 (electric-indent-mode t)          ; auto indent where appropriate
 (load-theme 'twilight t)          ; tango-dark is nice too
 
@@ -24,7 +22,6 @@
 ;; https://github.com/adobe/source-code-pro
 (if (x-list-fonts "SourceCodePro")
     (set-frame-font "SourceCodePro-11" t t))
-
 
 ;; put buffer name or file path in frame title (why is this not a package called buffer-name-in-title?)
 (setq frame-title-format
@@ -82,6 +79,15 @@ Position the cursor at its beginning, according to the current mode."
 
 ;;; package specific configuration
 
+;; flx-ido
+(require 'flx-ido)
+(flx-ido-mode 1)
+(setq ido-use-faces nil)
+
+;; ido-vertical-mode
+(require 'ido-vertical-mode)
+(ido-vertical-mode)
+
 ;; magit
 (setq magit-status-buffer-switch-function 'switch-to-buffer) ; status opens full-frame
 (global-set-key "\C-xg" 'magit-status)
@@ -89,11 +95,19 @@ Position the cursor at its beginning, according to the current mode."
 ;; browse-kill-ring
 (browse-kill-ring-default-keybindings) ; M-y opens browser
 
+;; smartparens
+(require 'smartparens-config)
+(smartparens-global-mode t)
+(show-smartparens-global-mode t)
+
 ;; multiple-cursors
 (require 'multiple-cursors)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+;; linum-off
+(require 'linum-off) ; disables linum-mode where appropriate
 
 ;; auto-complete
 (require 'auto-complete-config)
@@ -125,15 +139,6 @@ Position the cursor at its beginning, according to the current mode."
   "Major mode for editing Markdown files" t)
 (setq auto-mode-alist
       (cons '("\\.md" . markdown-mode) auto-mode-alist))
-
-;; flx-ido
-(require 'flx-ido)
-(flx-ido-mode 1)
-(setq ido-use-faces nil)
-
-;; ido-vertical-mode
-(require 'ido-vertical-mode)
-(ido-vertical-mode)
 
 ;; org-mode
 (setq org-directory "~/org")

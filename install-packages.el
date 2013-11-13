@@ -13,6 +13,7 @@
 	'ido-vertical-mode
 	'magit
 	'browse-kill-ring
+        'smartparens
 	'multiple-cursors
 	'linum-off
 	'auto-complete
@@ -20,7 +21,6 @@
 	'haml-mode
 	'rspec-mode
 	'ruby-tools
-	'ruby-end
 	'flymake-ruby
 	'rinari
 	'markdown-mode
