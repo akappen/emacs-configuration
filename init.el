@@ -6,17 +6,29 @@
 
 ;;; global configuration
 
-;; interface tweaks
-(setq inhibit-splash-screen t)    ; no welcome screen
-(defalias 'yes-or-no-p 'y-or-n-p) ; short prompts
+(setq inhibit-startup-screen t)   ; no welcome screen
 (menu-bar-mode t)                 ; enable menus
 (global-linum-mode t)             ; line numbers
 (column-number-mode t)            ; modeline column numbers
 (winner-mode t)                   ; window layout history
-(add-hook 'before-save-hook       ; clean whitespace on save
-	  'delete-trailing-whitespace)
+(global-auto-revert-mode t)       ; reload external file changes
 (electric-indent-mode t)          ; auto indent where appropriate
 (load-theme 'twilight t)          ; tango-dark is nice too
+
+;; nicer scrolling defaults
+(setq scroll-margin 2)
+(setq scroll-error-top-bottom t)
+(setq scroll-preserve-screen-position t)
+
+;; disable file interlocking
+(setq create-lockfiles nil)
+
+;; short prompts
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; clean whitespace on save
+(add-hook 'before-save-hook
+	  'delete-trailing-whitespace)
 
 ;; set font to Source Code Pro if available
 ;; https://github.com/adobe/source-code-pro
@@ -24,28 +36,23 @@
     (if (x-list-fonts "SourceCodePro")
         (set-frame-font "SourceCodePro-11" t t)))
 
-;; put buffer name or file path in frame title (why is this not a package called buffer-name-in-title?)
+;; put buffer name or file path in frame title
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))))
 
-;; camelcase editing in programming modes
-(add-hook 'prog-mode-hook 'subword-mode)
-
-;; allow scroll-down/up-command to move point to buffer end/beginning
-(setq scroll-error-top-bottom t)
-
-;; scroll-down/up-command returns to starting row and column
-(setq scroll-preserve-screen-position t)
-
 ;; window navigation
-(global-set-key (kbd "M-o") 'next-multiframe-window)
+;;(global-set-key (kbd "M-o") 'next-multiframe-window)
+(global-set-key (kbd "M-o") 'switch-window) ; testing switch-window
 (global-set-key (kbd "M-O") 'previous-multiframe-window)
 
 ;; C-h and M-h as delete and delete word
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "M-h") 'backward-kill-word)
+
+;; camelcase editing in programming modes
+(add-hook 'prog-mode-hook 'subword-mode)
 
 ;; spell check comments in programming modes
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
@@ -54,6 +61,22 @@
 (grep-compute-defaults)
 (add-to-list 'grep-find-ignored-directories "log")
 (add-to-list 'grep-find-ignored-directories "tmp")
+
+;; C-c g runs vc-git-grep
+(global-set-key (kbd "C-c g") 'vc-git-grep)
+
+;; toggle dedicated window
+(defun toggle-window-dedicated ()
+  "Control whether or not Emacs is allowed to display another
+buffer in current window."
+  (interactive)
+  (message
+   (if (let (window (get-buffer-window (current-buffer)))
+         (set-window-dedicated-p window (not (window-dedicated-p window))))
+       "%s: Can't touch this!"
+     "%s is up for grabs.")
+   (current-buffer)))
+(global-set-key (kbd "C-c t") 'toggle-window-dedicated)
 
 ;; open and indent new line from anywhere
 (defun smart-open-line ()
@@ -65,10 +88,10 @@ Position the cursor at its beginning, according to the current mode."
 (global-set-key [(shift return)] 'smart-open-line)
 (global-set-key (kbd "C-M-j") 'smart-open-line)
 
-;; find recent files (why is this not a package called ido-recentf?)
+;; find recent files
 (require 'recentf)
 (recentf-mode 1)
-(setq recentf-max-menu-items 25)
+(setq recentf-max-menu-items 400)
 (defun ido-recentf-find-file ()
   "Find a recent file using ido."
   (interactive)
@@ -106,6 +129,7 @@ Position the cursor at its beginning, according to the current mode."
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-c C-SPC") 'mc/mark-all-dwim)
 
 ;; linum-off
 (require 'linum-off) ; disables linum-mode where appropriate
@@ -116,13 +140,18 @@ Position the cursor at its beginning, according to the current mode."
 (ac-flyspell-workaround)
 (add-to-list 'ac-modes 'haml-mode)
 (add-to-list 'ac-modes 'coffee-mode)
+(define-key ac-completing-map [down] nil)
+(define-key ac-completing-map [up] nil)
+
+;; js-mode
+(setq js-indent-level 2)
 
 ;; coffee-mode
 (require 'coffee-mode)
 (setq coffee-tab-width 2)
 
 ;; ruby-mode
-(setq ruby-deep-indent-paren nil) ; force 2 space indent of multi-line hash literals
+(setq ruby-deep-indent-paren nil)
 
 ;; ruby-tools
 (require 'ruby-tools) ; needed to hook ruby-mode

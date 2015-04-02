@@ -9,22 +9,29 @@
 ;; install or update packages
 (defvar my-packages
   (list 'better-defaults
-	'flx-ido
-	'ido-vertical-mode
-	'magit
-	'browse-kill-ring
+        'browse-kill-ring
         'smartparens
-	'multiple-cursors
-	'linum-off
-	'auto-complete
-	'coffee-mode
-	'haml-mode
-	'rspec-mode
-	'ruby-tools
-	'flymake-ruby
-	'rinari
-	'markdown-mode
-	'twilight-theme))
+        'multiple-cursors
+        'linum-off
+        'auto-complete
+        'twilight-theme
+        'flx-ido
+        'ido-vertical-mode
+        'switch-window
+        'magit
+        ;; coffeescript
+        'coffee-mode
+        ;; haml
+        'haml-mode
+        ;; ruby
+        'rspec-mode
+        'ruby-tools
+        'flymake-ruby
+        'rinari
+        ;; clojure
+        'cider
+        ;; markdown
+        'markdown-mode))
 (defun my-packages-install ()
   "Install my packages."
   (interactive)
