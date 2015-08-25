@@ -78,6 +78,21 @@ buffer in current window."
    (current-buffer)))
 (global-set-key (kbd "C-c t") 'toggle-window-dedicated)
 
+;; display-buffer-alist for grep buffers
+(add-to-list 'display-buffer-alist
+             `(,(rx bos "*grep*" eos)
+               (display-buffer-reuse-window
+                display-buffer-in-side-window)
+               (reusable-frames . visible)
+               (side            . bottom)
+               (window-height   . 0.4)))
+(defun ak-quit-bottom-side-windows ()
+  "Quit side windows of the current frame."
+  (interactive)
+  (dolist (window (window-at-side-list))
+    (quit-window nil window)))
+(global-set-key (kbd "C-c q") #'ak-quit-bottom-side-windows)
+
 ;; open and indent new line from anywhere
 (defun smart-open-line ()
   "Insert an empty line after the current line.
@@ -145,6 +160,11 @@ Position the cursor at its beginning, according to the current mode."
 
 ;; js-mode
 (setq js-indent-level 2)
+
+;; web-mode
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+(setq web-mode-markup-indent-offset 2)
 
 ;; coffee-mode
 (require 'coffee-mode)

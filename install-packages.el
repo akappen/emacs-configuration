@@ -19,19 +19,17 @@
         'ido-vertical-mode
         'switch-window
         'magit
-        ;; coffeescript
+        'web-mode
         'coffee-mode
-        ;; haml
         'haml-mode
+        'markdown-mode
         ;; ruby
         'rspec-mode
         'ruby-tools
         'flymake-ruby
         'rinari
         ;; clojure
-        'cider
-        ;; markdown
-        'markdown-mode))
+        'cider))
 (defun my-packages-install ()
   "Install my packages."
   (interactive)
