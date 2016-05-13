@@ -9,17 +9,20 @@
 ;; install or update packages
 (defvar my-packages
   (list 'better-defaults
+        'powerline
         'browse-kill-ring
         'smartparens
         'multiple-cursors
         'linum-off
         'auto-complete
         'twilight-theme
+        'solarized-theme
         'flx-ido
         'ido-vertical-mode
         'switch-window
         'magit
         'web-mode
+        'scss-mode
         'coffee-mode
         'haml-mode
         'markdown-mode

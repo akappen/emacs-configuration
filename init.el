@@ -118,10 +118,23 @@ Position the cursor at its beginning, according to the current mode."
 
 ;;; package specific configuration
 
+;; powerline
+;; separators: alternate arrow arrow-fade bar box brace butt chamfer
+;; contour curve rounded roundstub slant wave zigzag
+;; themes: default center center-evil vim nano
+(require 'powerline)
+(setq powerline-default-separator 'brace)
+(powerline-default-theme)
+;; disable 3d effects on modeline, adjust colors
+(set-face-attribute 'mode-line nil :box nil :foreground "white")
+(set-face-attribute 'mode-line-inactive nil :box nil :weight 'unspecified :background "gray50" :foreground "gray30")
+(set-face-attribute 'mode-line-highlight nil :box nil)
+
 ;; flx-ido
 (require 'flx-ido)
 (flx-ido-mode 1)
 (setq ido-use-faces nil)
+(setq ido-use-virtual-buffers t)
 
 ;; ido-vertical-mode
 (require 'ido-vertical-mode)
