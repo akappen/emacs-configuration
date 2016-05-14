@@ -139,6 +139,7 @@ Position the cursor at its beginning, according to the current mode."
 ;; ido-vertical-mode
 (require 'ido-vertical-mode)
 (ido-vertical-mode)
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
 
 ;; magit
 (setq magit-status-buffer-switch-function 'switch-to-buffer) ; status opens full-frame
