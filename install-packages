@@ -1,0 +1,2 @@
+#! /usr/bin/env sh
+emacs --batch --load install-packages.el
