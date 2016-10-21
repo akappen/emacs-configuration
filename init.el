@@ -11,6 +11,7 @@
 (global-linum-mode t)             ; line numbers
 (column-number-mode t)            ; modeline column numbers
 (winner-mode t)                   ; window layout history
+(delete-selection-mode t)         ; overwrite/delete selection
 (global-auto-revert-mode t)       ; reload external file changes
 (electric-indent-mode t)          ; auto indent where appropriate
 (load-theme 'twilight t)          ; tango-dark is nice too
@@ -43,16 +44,16 @@
                  "%b"))))
 
 ;; window navigation
-;;(global-set-key (kbd "M-o") 'next-multiframe-window)
+;; (global-set-key (kbd "M-o") 'next-multiframe-window)
 (global-set-key (kbd "M-o") 'switch-window) ; testing switch-window
-(global-set-key (kbd "M-O") 'previous-multiframe-window)
+;; (global-set-key (kbd "M-O") 'previous-multiframe-window)
 
 ;; C-h and M-h as delete and delete word
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 
 ;; camelcase editing in programming modes
-(add-hook 'prog-mode-hook 'subword-mode)
+(add-hook 'prog-mode-hook 'syntax-subword-mode)
 
 ;; spell check comments in programming modes
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
@@ -86,6 +87,15 @@ buffer in current window."
                (reusable-frames . visible)
                (side            . bottom)
                (window-height   . 0.4)))
+;; display-buffer-alist for alchemist test buffers
+(add-to-list 'display-buffer-alist
+             `(,(rx bos "*alchemist test report*" eos)
+               (display-buffer-reuse-window
+                display-buffer-in-side-window)
+               (reusable-frames . visible)
+               (side            . bottom)
+               (window-height   . 0.4)))
+
 (defun ak-quit-bottom-side-windows ()
   "Quit side windows of the current frame."
   (interactive)
@@ -93,20 +103,11 @@ buffer in current window."
     (quit-window nil window)))
 (global-set-key (kbd "C-c q") #'ak-quit-bottom-side-windows)
 
-;; open and indent new line from anywhere
-(defun smart-open-line ()
-  "Insert an empty line after the current line.
-Position the cursor at its beginning, according to the current mode."
-  (interactive)
-  (move-end-of-line nil)
-  (newline-and-indent))
-(global-set-key [(shift return)] 'smart-open-line)
-(global-set-key (kbd "C-M-j") 'smart-open-line)
-
 ;; find recent files
 (require 'recentf)
 (recentf-mode 1)
-(setq recentf-max-menu-items 400)
+(setq recentf-max-saved-items 400)
+(setq recentf-max-menu-items 80)
 (defun ido-recentf-find-file ()
   "Find a recent file using ido."
   (interactive)
@@ -125,10 +126,9 @@ Position the cursor at its beginning, according to the current mode."
 (require 'powerline)
 (setq powerline-default-separator 'brace)
 (powerline-default-theme)
-;; disable 3d effects on modeline, adjust colors
+;; adjust active/inactive colors
 (set-face-attribute 'mode-line nil :box nil :foreground "white")
-(set-face-attribute 'mode-line-inactive nil :box nil :weight 'unspecified :background "gray50" :foreground "gray30")
-(set-face-attribute 'mode-line-highlight nil :box nil)
+(set-face-attribute 'mode-line-inactive nil :box nil :weight 'unspecified :background "gray75" :foreground "gray50")
 
 ;; flx-ido
 (require 'flx-ido)
@@ -142,7 +142,7 @@ Position the cursor at its beginning, according to the current mode."
 (setq ido-vertical-define-keys 'C-n-and-C-p-only)
 
 ;; magit
-(setq magit-status-buffer-switch-function 'switch-to-buffer) ; status opens full-frame
+(setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
 (global-set-key "\C-xg" 'magit-status)
 
 ;; browse-kill-ring
@@ -152,6 +152,8 @@ Position the cursor at its beginning, according to the current mode."
 (require 'smartparens-config)
 (smartparens-global-mode t)
 (show-smartparens-global-mode t)
+(setq sp-highlight-pair-overlay nil)
+(require 'smartparens-ruby)
 
 ;; multiple-cursors
 (require 'multiple-cursors)
@@ -164,13 +166,18 @@ Position the cursor at its beginning, according to the current mode."
 (require 'linum-off) ; disables linum-mode where appropriate
 
 ;; auto-complete
-(require 'auto-complete-config)
-(ac-config-default)
-(ac-flyspell-workaround)
-(add-to-list 'ac-modes 'haml-mode)
-(add-to-list 'ac-modes 'coffee-mode)
-(define-key ac-completing-map [down] nil)
-(define-key ac-completing-map [up] nil)
+;; (require 'auto-complete-config)
+;; (ac-config-default)
+;; (ac-flyspell-workaround)
+;; (add-to-list 'ac-modes 'haml-mode)
+;; (add-to-list 'ac-modes 'coffee-mode)
+;; (define-key ac-completing-map [down] nil)
+;; (define-key ac-completing-map [up] nil)
+
+;; company mode
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-minimum-prefix-length 4)
+
 
 ;; js-mode
 (setq js-indent-level 2)
@@ -178,7 +185,11 @@ Position the cursor at its beginning, according to the current mode."
 ;; web-mode
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.eex\\'" . web-mode))
 (setq web-mode-markup-indent-offset 2)
+
+;; scss-mode
+(setq css-indent-offset 2)
 
 ;; coffee-mode
 (require 'coffee-mode)
@@ -204,6 +215,20 @@ Position the cursor at its beginning, according to the current mode."
 (setq auto-mode-alist
       (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
+;; elixir
+(require 'elixir-mode)
+(sp-with-modes '(elixir-mode)
+  (sp-local-pair "fn" "end"
+         :when '(("SPC" "RET"))
+         :actions '(insert navigate))
+  (sp-local-pair "do" "end"
+         :when '(("SPC" "RET"))
+         :post-handlers '(sp-ruby-def-post-handler)
+         :actions '(insert navigate)))
+
+;; alchemist
+(require 'alchemist)
+
 ;; org-mode
 (setq org-directory "~/org")
 (setq org-agenda-files (directory-files org-directory 1 "\.org$"))
@@ -211,3 +236,5 @@ Position the cursor at its beginning, according to the current mode."
 (setq org-agenda-start-with-clockreport-mode t)
 (setq org-agenda-start-with-log-mode t)
 (global-set-key "\C-ca" 'org-agenda)
+(setq org-time-clocksum-format
+      '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))

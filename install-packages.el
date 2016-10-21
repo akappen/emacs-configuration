@@ -11,10 +11,11 @@
   (list 'better-defaults
         'powerline
         'browse-kill-ring
+        'syntax-subword
         'smartparens
         'multiple-cursors
         'linum-off
-        'auto-complete
+        'company
         'twilight-theme
         'solarized-theme
         'flx-ido
@@ -31,8 +32,9 @@
         'ruby-tools
         'flymake-ruby
         'rinari
-        ;; clojure
-        'cider))
+	;; elixir
+	'elixir-mode
+	'alchemist))
 (defun my-packages-install ()
   "Install my packages."
   (interactive)
