@@ -222,7 +222,8 @@ buffer in current window."
 
 ;; org-mode
 (setq org-directory "~/org")
-(setq org-agenda-files (directory-files org-directory 1 "\.org$"))
+(if (file-exists-p org-directory)
+    ((setq org-agenda-files (directory-files org-directory 1 "\.org$"))))
 (setq org-agenda-clockreport-parameter-plist (quote (:fileskip0 t)))
 (setq org-agenda-start-with-clockreport-mode t)
 (setq org-agenda-start-with-log-mode t)
