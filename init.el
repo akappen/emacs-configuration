@@ -34,7 +34,9 @@
 ;; set font to Source Code Pro if available
 ;; https://github.com/adobe/source-code-pro
 (if (eq window-system 'x)
-    (if (x-list-fonts "SourceCodePro")
+    (if (x-list-fonts "Hack")
+        (set-frame-font "Hack-13" t t))
+      (if (x-list-fonts "SourceCodePro")
         (set-frame-font "SourceCodePro-11" t t)))
 
 ;; put buffer name or file path in frame title
@@ -124,7 +126,7 @@ buffer in current window."
 ;; contour curve rounded roundstub slant wave zigzag
 ;; themes: default center center-evil vim nano
 (require 'powerline)
-(setq powerline-default-separator 'brace)
+(setq powerline-default-separator 'arrow)
 (powerline-default-theme)
 ;; adjust active/inactive colors
 (set-face-attribute 'mode-line nil :box nil :foreground "white")
@@ -142,8 +144,8 @@ buffer in current window."
 (setq ido-vertical-define-keys 'C-n-and-C-p-only)
 
 ;; magit
-(setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
 (global-set-key "\C-xg" 'magit-status)
+(setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
 
 ;; browse-kill-ring
 (browse-kill-ring-default-keybindings) ; M-y opens browser
@@ -165,19 +167,9 @@ buffer in current window."
 ;; linum-off
 (require 'linum-off) ; disables linum-mode where appropriate
 
-;; auto-complete
-;; (require 'auto-complete-config)
-;; (ac-config-default)
-;; (ac-flyspell-workaround)
-;; (add-to-list 'ac-modes 'haml-mode)
-;; (add-to-list 'ac-modes 'coffee-mode)
-;; (define-key ac-completing-map [down] nil)
-;; (define-key ac-completing-map [up] nil)
-
 ;; company mode
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-minimum-prefix-length 4)
-
 
 ;; js-mode
 (setq js-indent-level 2)
@@ -212,8 +204,7 @@ buffer in current window."
 ;; markdown-mode
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
-(setq auto-mode-alist
-      (cons '("\\.md" . markdown-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '(".md$" . gfm-mode))
 
 ;; elixir
 (require 'elixir-mode)
