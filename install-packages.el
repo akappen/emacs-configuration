@@ -21,6 +21,7 @@
         'flx-ido
         'ido-vertical-mode
         'switch-window
+        'flycheck
         'magit
         'web-mode
         'scss-mode
@@ -30,7 +31,6 @@
         ;; ruby
         'rspec-mode
         'ruby-tools
-        'flymake-ruby
         'rinari
 	;; elixir
 	'elixir-mode

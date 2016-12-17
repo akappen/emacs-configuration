@@ -171,6 +171,9 @@ buffer in current window."
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-minimum-prefix-length 4)
 
+;; flycheck mode
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
 ;; js-mode
 (setq js-indent-level 2)
 
@@ -192,10 +195,6 @@ buffer in current window."
 
 ;; ruby-tools
 (require 'ruby-tools) ; needed to hook ruby-mode
-
-;; flymake-ruby
-(require 'flymake-ruby)
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
 ;; rinari
 (require 'rinari)
