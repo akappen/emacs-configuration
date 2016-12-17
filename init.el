@@ -31,13 +31,16 @@
 (add-hook 'before-save-hook
 	  'delete-trailing-whitespace)
 
-;; set font to Source Code Pro if available
-;; https://github.com/adobe/source-code-pro
-(if (eq window-system 'x)
-    (if (x-list-fonts "Hack")
-        (set-frame-font "Hack-13" t t))
-      (if (x-list-fonts "SourceCodePro")
-        (set-frame-font "SourceCodePro-11" t t)))
+;; set default font
+;;   Cousine: apt install fonts-croscore
+;;   Hack: apt install fonts-hack-otf
+;;   Source Code Pro: https://github.com/adobe/source-code-pro
+(cond ((x-list-fonts "Cousine")
+       (set-frame-font "Cousine-13" t t))
+      ((x-list-fonts "Hack")
+       (set-frame-font "Hack-13" t t))
+      ((x-list-fonts "SourceCodePro")
+       (set-frame-font "SourceCodePro-11" t t)))
 
 ;; put buffer name or file path in frame title
 (setq frame-title-format
