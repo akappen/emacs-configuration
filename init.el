@@ -100,6 +100,14 @@ buffer in current window."
                (reusable-frames . visible)
                (side            . bottom)
                (window-height   . 0.4)))
+;; display-buffer-alist for rspec buffers
+(add-to-list 'display-buffer-alist
+             `(,(rx bos "*rspec-compilation*" eos)
+               (display-buffer-reuse-window
+                display-buffer-in-side-window)
+               (reusable-frames . visible)
+               (side            . bottom)
+               (window-height   . 0.4)))
 
 (defun ak-quit-bottom-side-windows ()
   "Quit side windows of the current frame."
@@ -202,6 +210,10 @@ buffer in current window."
 ;; rinari
 (require 'rinari)
 (global-rinari-mode)
+
+;; haml-mode
+(require 'haml-mode)
+(add-to-list 'auto-mode-alist '("\\.slim\\'" . haml-mode))
 
 ;; markdown-mode
 (autoload 'markdown-mode "markdown-mode"
