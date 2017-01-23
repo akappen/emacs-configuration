@@ -35,12 +35,13 @@
 ;;   Cousine: apt install fonts-croscore
 ;;   Hack: apt install fonts-hack-otf
 ;;   Source Code Pro: https://github.com/adobe/source-code-pro
-(cond ((x-list-fonts "Cousine")
-       (set-frame-font "Cousine-13" t t))
-      ((x-list-fonts "Hack")
-       (set-frame-font "Hack-13" t t))
-      ((x-list-fonts "SourceCodePro")
-       (set-frame-font "SourceCodePro-11" t t)))
+(when window-system
+  (cond ((x-list-fonts "Cousine")
+         (set-frame-font "Cousine-13" t t))
+        ((x-list-fonts "Hack")
+         (set-frame-font "Hack-13" t t))
+        ((x-list-fonts "SourceCodePro")
+         (set-frame-font "SourceCodePro-11" t t))))
 
 ;; put buffer name or file path in frame title
 (setq frame-title-format
@@ -237,7 +238,7 @@ buffer in current window."
 ;; org-mode
 (setq org-directory "~/org")
 (if (file-exists-p org-directory)
-    ((setq org-agenda-files (directory-files org-directory 1 "\.org$"))))
+    (setq org-agenda-files (directory-files org-directory 1 "\.org$")))
 (setq org-agenda-clockreport-parameter-plist (quote (:fileskip0 t)))
 (setq org-agenda-start-with-clockreport-mode t)
 (setq org-agenda-start-with-log-mode t)
