@@ -58,6 +58,9 @@
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 
+;; C-x k kills current buffer
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+
 ;; camelcase editing in programming modes
 (add-hook 'prog-mode-hook 'syntax-subword-mode)
 
